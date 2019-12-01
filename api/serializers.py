@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User, Group
 from rest_framework import serializers
 from .models import Room, Owner, Event
+from rest_framework.authtoken.models import Token
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -10,6 +11,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 
     def create(self, validated_data):
         user = User.objects.create_user(**validated_data)
+        Token.objects.create(user=user)
         return user
 
 class RoomSerializer(serializers.HyperlinkedModelSerializer):
