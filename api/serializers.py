@@ -17,12 +17,12 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 class RoomSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Room
-        fields = ('id', 'url', 'room_name')
+        fields = ('id', 'name')
 
 class EventSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
-        fields = ('id', 'url', 'event_name', 'owner', 'client', 'start_time', 'end_time', 'image')
+        fields = ('id', 'room', 'name', 'owner', 'client', 'start', 'end', 'image')
 
 class OwnerSerializer(serializers.ModelSerializer):
     class Meta:

@@ -7,6 +7,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
+from rest_framework import generics
+
 
 from .models import Room, Owner, Event
 # Create your views here.
@@ -42,4 +44,15 @@ class EventViewSet(viewsets.ModelViewSet):
     serializer_class = EventSerializer
     authentication_classes = (TokenAuthentication, SessionAuthentication)
     permission_classes = (IsAuthenticated,)
+
+
+    def get_queryset(self):
+            """
+            This view should return a list of all the purchases
+            for the currently authenticated user.
+            """
+            user = self.request.user
+            return Event.objects.filter(owner=user.id)
+
+
 
