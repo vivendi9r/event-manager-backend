@@ -7,7 +7,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
-from rest_framework import generics
+from django.views.generic.edit import CreateView
 
 
 from .models import Room, Owner, Event
@@ -45,7 +45,6 @@ class EventViewSet(viewsets.ModelViewSet):
     authentication_classes = (TokenAuthentication, SessionAuthentication)
     permission_classes = (IsAuthenticated,)
 
-
     def get_queryset(self):
             """
             This view should return a list of all the purchases
@@ -54,5 +53,11 @@ class EventViewSet(viewsets.ModelViewSet):
             user = self.request.user
             return Event.objects.filter(owner=user.id)
 
-
+class CustomObtainAuthToken(ObtainAuthToken):
+    def post(self, request, *args, **kwargs):
+        response = super(CustomObtainAuthToken, self).post(request, *args, **kwargs)
+        token = Token.objects.get(key=response.data['token'])
+        user = User.objects.get(id=token.user_id)
+        serializer = UserSerializer(user, many=False, context={'request': request})
+        return Response({'token': token.key, 'user': serializer.data})
 
