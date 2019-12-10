@@ -3,7 +3,7 @@ from django.contrib.auth.models import User, Group
 from rest_framework import viewsets, status
 from .serializers import UserSerializer, RoomSerializer, OwnerSerializer, EventSerializer
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
@@ -28,6 +28,8 @@ class RoomViewSet(viewsets.ModelViewSet):
     """
     queryset = Room.objects.all()
     serializer_class = RoomSerializer
+    authentication_classes = (TokenAuthentication, SessionAuthentication)
+    permission_classes = (AllowAny,)
 
 class OwnerViewSet(viewsets.ModelViewSet):
     """
