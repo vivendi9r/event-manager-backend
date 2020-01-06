@@ -20,20 +20,7 @@ class RoomSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('id', 'name')
 
 class EventSerializer(serializers.ModelSerializer):
-    # owner = serializers.HiddenField(
-    #     default=serializers.CurrentUserDefault()
-    # )
-
-    # def perform_create(self, serializer):
-    #     serializer.save(owner=self.request.user)
-    #
-    # def perform_update(self, serializer):
-    #     serializer.save(owner=self.request.user)
-
-    def create(self, validated_data):
-        user = super(UserSerializer, self).create(validated_data)
-        user.save()
-        return user
+    #client = UserSerializer(many=True, blank=True)
 
     class Meta:
         model = Event

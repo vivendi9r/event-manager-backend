@@ -55,6 +55,15 @@ class EventViewSet(viewsets.ModelViewSet):
             user = self.request.user
             return Event.objects.filter(owner=user.id)
 
+    def perform_create(self, serializer):
+        user = self.request.user
+
+        serializer.save(owner=Owner(user=user))
+
+    # def perform_update(self, serializer):
+    #     user = self.request.user
+    #     serializer.save(client=User(id=user.id))
+
 class CustomObtainAuthToken(ObtainAuthToken):
     def post(self, request, *args, **kwargs):
         response = super(CustomObtainAuthToken, self).post(request, *args, **kwargs)
